@@ -19,18 +19,19 @@ A concise and detailed guide for effortless Arch Linux installation, offering a 
 <details>
     <summary>Wi-Fi</summary>
 Start the daemons required:
-```
+
+```zsh
 systemctl start iwd
 systemctl start dhcpcd
 ```
 
 Get interface name:
-```
+```zsh
 ifconfig
 ```
 
 Connecting to wi-fi.
-```
+```zsh
 iwctl station <interface_name> connect "ssid"
 ```
 Hit ENTER to enter your wifi password and confirm connection
@@ -44,12 +45,12 @@ Hit ENTER to enter your wifi password and confirm connection
 </details>
 
 ### Test your internet connection
-```
+```zsh
 ping -c 3 8.8.8.8       // ensure that DHCP is working
 ping -c 3 archlinux.org // ensure that DNS is working
 ```
 If your output for both the above command looks something like this, you are connected to the internet
-```
+```zsh
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=113 ms
 64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=114 ms
@@ -83,7 +84,7 @@ We will be using `cfdisk` tool to create our partitions. anyone with a normal hu
 ```bash
 cfdisk /dev/nvme0n1     #replace disk name(nvme0n1) with your disk name
 ```
-Delete any existing partions by following the on-screen option
+Delete any existing partions by following the on-screen option.<br>
 Create 3 partions as follows:<br>
 
 |Partition      | Size      | Filesystem|
@@ -92,7 +93,8 @@ Create 3 partions as follows:<br>
 |&lt;swap&gt;    | same as your ram  | Linux Swap    |
 |&lt;root&gt;    | remaining storage | Linux filesystem|
 
-512M should be enough for most of the cases. If you will be installing multiple kernels, use atleast 1024M for efi partition
+> Minimum of 512M is recommended for efi partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.<br>
+
 The order doesn't matter but this is what i prefer
 Write and Quit
 Let's run the `fdisk -l` command again and compare the output
@@ -150,7 +152,7 @@ Locate and un-comment the following lines:
 For slower connections, you might want to change the ParallelDownloads to 3.<br>
 Using the keybinds given on the bottom of the screen, Write the file and exit
 
-Now lets install the packages
+Now lets install the packages and wait for the installation to finish
 ```bash
 pacstrap /mnt base linux linux-firmware vim nano
 ```
