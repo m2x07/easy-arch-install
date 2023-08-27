@@ -239,7 +239,7 @@ passwd
 ```
 Let's add our user. Replace &lt;username&gt; with your desired username.
 ```bash
-usermod -s /bin/bash -mG wheel <username>
+useradd -s /bin/bash -mG wheel <username>
 ```
 Set the password for our new user
 ```bash
