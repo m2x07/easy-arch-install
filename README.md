@@ -305,6 +305,8 @@ Once you see the login screen, make sure you have `Plasma (X11)` selected in the
 
 # 5. Post Install Configuration
 
+
+## Installing a helper for Arch User Repository (AUR)
 You cannot miss on the AUR. to get packages from AUR, you need an AUR Helper<br>
 We will be installing YAY.
 Follow the commands below one by one:
