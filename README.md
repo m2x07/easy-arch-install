@@ -278,6 +278,7 @@ No sane person would like to use plain tty(you may use plain tty if you wish to)
 You will be promped to choose which package to install couple of time. Simply go with default option. To do so, just hit ENTER each time you are asked.
 
 > *NOTE: steps to install other Desktop Environments and WMs like GNOME or i3wm, dwm, etc will be added soon*<br>
+
 Fix a sreen's color issue by removing a few packages (won't break your installtion):<br>
 ```bash
 pacman -R colord colord-kde
