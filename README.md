@@ -272,12 +272,12 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ## Installing a GUI (Desktop Environment OR Window Manager)
 No sane person would like to use plain tty(you may use plain tty if you wish to). We will install KDE Plasma (best one in my opinion).<br>
-> *NOTE: steps to install other Desktop Environments and WMs like GNOME or i3wm, dwm, etc will be added soon*<br>
 
 `pacman -S plasma plasma-wayland-session kde-applications sddm gnu-free-fonts noto-fonts noto-fonts-emoji packagekit-qt5 gnome-keyring cronie pipewire-media-session pipewire-jack phonon-qt5-vlc tesseract-data-ind python-pyqt5 xdg-desktop-portal-kde`<br>
 
 You will be promped to choose which package to install couple of time. Simply go with default option. To do so, just hit ENTER each time you are asked.
 
+> *NOTE: steps to install other Desktop Environments and WMs like GNOME or i3wm, dwm, etc will be added soon*<br>
 Fix a sreen's color issue by removing a few packages (won't break your installtion):<br>
 ```bash
 pacman -R colord colord-kde
