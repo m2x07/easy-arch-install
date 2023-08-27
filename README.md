@@ -49,7 +49,7 @@ Hit ENTER to enter your wifi password and confirm connection
 ping -c 3 8.8.8.8       // ensure that DHCP is working
 ping -c 3 archlinux.org // ensure that DNS is working
 ```
-If your output for both the above command looks something like this, you are connected to the internet
+If your output for both the above command looks something like this, it means that you are getting responce from the server and you are connected to the internet
 ```zsh
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=113 ms
