@@ -93,7 +93,7 @@ Create 3 partions as follows:<br>
 |&lt;swap&gt;    | same as your ram  | Linux Swap    |
 |&lt;root&gt;    | remaining storage | Linux filesystem|
 
-> Minimum of 512M is recommended for efi partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.<br>
+> *Minimum of 512M is recommended for efi partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.*<br>
 
 The order doesn't matter but this is what i prefer.<br>
 Write and Quit.<br>
@@ -165,7 +165,162 @@ genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
 # 4. Chrooting
+Till now we were working on our disk through the live environment.<br> 
+Now we need to shift to our disk and do our thing there.<br>
+```bash
+arch-chroot /mnt
+```
+
+> *NOTE: chrooting is the process of changing our root directory from live iso to the root of our disk where arch linux will be installed. make sure to not exit untill the installationi is finished as it may affect your installation. If you see the same commands, do not get confused as now we are in our new system and not the live iso*
+
+## Setting up the host
+First we set the hostname in `/etc/hostname` file. A host name is like a nickname for your computer. you may take a moment to choose one for yourself, and remember it<br>
+Once you've chosen, open up the file<br>
+```zsh
+nano /etc/hostname
+```
+and just write your hostname here. Save and Quit<br>
+
+Now we need to setup the `/etc/hosts` file.<br>
+Use your desired editor to open the file `/etc/hosts`<br>
+
+```zsh
+nano /etc/hosts
+```
+and APPEND the following lines in there:
+```
+127.0.0.1       localhost
+::1             localhost
+127.0.0.1       <hostname>
+```
+In case you didn't guessed it yet, replace `<hostname>` with what you set in the `/etc/hostname` file.<br>
+Write and Quit.<br>
+
+## Configuring the Locale
+Open the file `/etc/locale.gen` and un-comment your desired locale. For us, its `en_US.UTF-8`.<br>
+Generate your locales based on the `locale.gen` file:
+```zsh
+locale-gen
+```
+Set the locale in `/etc/locale.conf` file:
+```zsh
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+```
+Export the environment variable for the locale
+```zsh
+export $(cat /etc/locale.conf)
+```
+
+## Installing necessary packages
+Let's make some changes to the config file of our package manager
+```bash
+nano /etc/pacman.conf           # or any text editor of your preference
+```
+Locate and un-comment the following lines:
+
+`Color`<br>
+`ParallelDownloads = 5`<br><br>
+`[multilib]`<br>
+`Include = /etc/pacman.d/mirrorlist`<br>
+
+Feel free to change the value of ParallelDownloads.<br>
+Install the packages using:
+```bash
+pacman -Syy sudo linux-headers efibootmgr grub amd-ucode git base-devel dkms avahi os-prober ntfs-3g
+```
+> *NOTE: replace `amd-ucode` with `intel-ucode` for intel CPUs. <br> if you installed `linux-zen` kernel, then replace `linux-headers` with `linux-zen-headers`.<br>
+include `grub-btrfs` package if you used btrfs filesystem*
+
+## Adding a new user
+We haven't created our user yet and we will do it now.<br>
+First let's change the password for the root account.
+```bash
+passwd
+```
+Let's add our user. Replace &lt;username&gt; with your desired username.
+```bash
+usermod -s /bin/bash -mG wheel <username>
+```
+Set the password for our new user
+```bash
+passwd <username>
+```
+Let's allow the group "wheel" to execute any commands with sudo
+```bash
+EDITOR=nano visudo
+```
+Locate and un-comment the following line:<br>
++ `%wheel ALL=(ALL:ALL) ALL`<br>
+
+## Installing a bootloader (GRUB)
+We will be installing GRUB for this one<br>
+If you wish to use any other bootloader, refer to the respective documentations.<br>
+```bash
+grub-install --target=x86_64-efi --bootloader-id="Arch Linux" --efi-directory=/boot/efi --recheck
+```
+Open the file `/etc/default/grub` and un-comment the following line present at the end of the file:<br>
+`GRUB_DISABLE_OS_PROBER=false`<br>
+
+Creating initial ramdisk
+```bash
+mkinitcpio -P
+```
+Generate the GRUB configuration file:<br>
+```bash
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+## Installing a GUI (Desktop Environment OR Window Manager)
+No sane person would like to use plain tty(you may use plain tty if you wish to). We will install KDE Plasma (best one in my opinion).<br>
+> *NOTE: steps to install other Desktop Environments and WMs like GNOME or i3wm, dwm, etc will be added soon*
+```bash
+pacman -S plasma plasma-wayland-session kde-applications sddm gnu-free-fonts noto-fonts noto-fonts-emoji packagekit-qt5 gnome-keyring cronie pipewire-media-session pipewire-jack phonon-qt5-vlc tesseract-data-ind python-pyqt5 xdg-desktop-portal-kde
+```
+You will be promped to choose which package to install couple of time. Simply go with default option. To do so, just hit ENTER each time you are asked.
+
+Fix a sreen's color issue by removing a few packages (won't break your installtion):<br>
+```bash
+pacman -R colord colord-kde
+```
+
+Let's enable the NetworkManager, Login Manager and avahi daemon
+```bash
+systemctl enable NetworkManager sddm avahi-daemon
+```
+This will take a while, so sit back and wait for the installation to finish.<br>
+Once the installation is done, its finally time to exit the chroot.
+```bash
+exit
+```
+Bingo, we've finally completed the Arch Linux installation. now its time to exit the chroot.
+```bash
+exit
+```
+Now that you are back in live iso, reboot your system:<br>
+```zsh
+reboot now
+```
+Pull out the thumb drive with live iso once the screen turns off and before our computer turns back on.<br>
+Once you see the login screen, make sure you have `Plasma (X11)` selected in the dropdown menu at top-left of the screen. Enter your password and login.    
 
 # 5. Post Install Configuration
+
+You cannot miss on the AUR. to get packages from AUR, you need an AUR Helper<br>
+We will be installing YAY.
+Follow the commands below one by one:
+```bash
+cd /opt
+sudo git clone https://aur.archlinux.org/yay-git.git
+sudo chown -R $USER:$USER ./yay-git
+cd yay-git
+makepkg -si
+```
+Enter your password whenever prompted and hit ENTER whenever prompted<br>
+Now you can install packages from the Arch User Repository (AUR) just like you do in pacman:<br>
+Example: <br>
+```bash
+yay -S package_name         # install a package
+yay -Ss <search_keyword>    # search for a package
+```
 
 # Addtional Links
