@@ -95,9 +95,9 @@ Create 3 partions as follows:<br>
 
 > Minimum of 512M is recommended for efi partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.<br>
 
-The order doesn't matter but this is what i prefer
-Write and Quit
-Let's run the `fdisk -l` command again and compare the output
+The order doesn't matter but this is what i prefer.<br>
+Write and Quit.<br>
+Let's run the `fdisk -l` command again and compare the output.<br>
 
 ```
 Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
