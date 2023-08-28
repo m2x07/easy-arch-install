@@ -293,10 +293,7 @@ Once the installation is done, its finally time to exit the chroot.
 ```bash
 exit
 ```
-Bingo, we've finally completed the Arch Linux installation. now its time to exit the chroot.
-```bash
-exit
-```
+
 Now that you are back in live iso, reboot your system:<br>
 ```zsh
 reboot now
