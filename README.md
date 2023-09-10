@@ -1,6 +1,8 @@
 # Easy Arch Install
 A concise and detailed guide for effortless Arch Linux installation, offering a smooth installation journey
 
+> **NOTE:** The author assumes that the reader has basic knowledge and overview of using the command line and working with the shell. if you are a complete beginner, then i would recommend avoiding Arch Linux and stick to some beginner friendly distro.
+
 # 📑 Index
 + [Initial Setup](https://github.com/m2x07/easy-arch-install#1-initial-setup)
 + [Disk Configuration](https://github.com/m2x07/easy-arch-install#2-disk-configuration)
@@ -34,6 +36,9 @@ Connecting to wi-fi.
 ```zsh
 iwctl station <interface_name> connect "ssid"
 ```
+> `ssid` is the name of the wi-fi network you want to connect to
+
+
 Hit ENTER to enter your wifi password and confirm connection
 </details>
 
@@ -79,8 +84,8 @@ The "/dev/nvme0n1" in the first line is our disk we'll be working on. disk name 
 
 ## Partitioning:
 There are various layouts and filesystems one can use to install Arch Linux
-For this guide, we will be using EXT4 filesystem
-We will be using `cfdisk` tool to create our partitions. anyone with a normal human brain can use it easily as it is a TUI
+For this guide, we will be primarily using EXT4 filesystem
+We will be using `cfdisk` tool to create our partitions. this tool is fairly easy to use as you can navigate through the options just by using the arrow keys.
 ```bash
 cfdisk /dev/nvme0n1     #replace disk name(nvme0n1) with your disk name
 ```
@@ -117,13 +122,13 @@ As you can see, we can see information about our newly created partitions in the
 
 ## Formatting:
 Let's format our partitions with appropriate filesystem<br>
-Like i said, there are multiple options and methods when it comes to partitioning and formatting, for this guide, we'll be covering ext4 filesystem
+Like i said, there are multiple options and methods when it comes to partitioning and formatting, for this guide, we'll be covering ext4 as our primary filesystem
 ```bash
 mkfs.fat -F 32 /dev/<efi>       # FAT32 for the efi partition
 mkfs.swap /dev/<swap>           # swap partition
 mkfs.ext4 /dev/<root>           # EXT4 for the root partition
 ```
-*For BTRFS and other Filesystems, refer the friendly [ArchWiki](https://wiki.archlinux.org/title/btrfs) :)*
+*As of now for BTRFS and other Filesystems, refer the friendly [ArchWiki](https://wiki.archlinux.org/title/btrfs) :)*
 
 ## Mounting:
 Mount all of the partitions:
@@ -233,7 +238,7 @@ include `grub-btrfs` package if you used btrfs filesystem*
 
 ## Adding a new user
 We haven't created our user yet and we will do it now.<br>
-First let's change the password for the root account.
+First let's change the password for the root user.
 ```bash
 passwd
 ```
@@ -253,7 +258,7 @@ Locate and un-comment the following line:<br>
 + `%wheel ALL=(ALL:ALL) ALL`<br>
 
 ## Installing a bootloader (GRUB)
-We will be installing GRUB for this one<br>
+We will be installing GRUB for this guide<br>
 If you wish to use any other bootloader, refer to the respective documentations.<br>
 ```bash
 grub-install --target=x86_64-efi --bootloader-id="Arch Linux" --efi-directory=/boot/efi --recheck
@@ -322,5 +327,100 @@ Example: <br>
 yay -S package_name         # install a package
 yay -Ss <search_keyword>    # search for a package
 ```
+
+## Installing NVIDIA Drivers for linux
+
+> This doesn't covers all the details for all NVIDIA cards. The steps shown here should work for most of the latest NVIDIA GPUs. 
+
+### Installing necessary packages
+
+First of all, make sure you have these packages installed:
+`base-devel`, `linux-headers` and `git`.<br>
+If you don't have any of these packages, please install them first
+
+Next step is to find out your card's code name [from this list](https://nouveau.freedesktop.org/CodeNames.html).<br>
+Find your card from the list and remember/note down its codename as different cards needs different drivers.<br>
+Carefully refer to the above list and then proceed down further this guide, it might be confusing at first<br>
+
+* For `NV110` series and newer (should work for almost every newer cards):
+
+```bash
+yay -S nvidia nvidia-utils nvidia-settings nvtop lib32-nvidia-utils opencl-nvidia lib32-opencl-nvidia
+```
+
+> replace `nvidia` with `nvidia-lts` if you installed `linux-lts` kernel. `nvidia-dkms` for any other kernel.
+
+
+
+* For `NVCx*` and `NVDx*` cards:
+
+> *where 'x' is any letter/number
+
+```bash
+yay -S nvidia-settings nvidia-390xx-dkms nvidia-390xx-utils lib32-nvidia-390xx-utils opencl-nvidia-390xx lib32-opencl-nvidia-390xx
+```
+
+* For `NVE0` family:
+
+```bash
+yay -S nvidia-settings nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils opencl-nvidia-470xx lib32-opencl-nvidia-470xx
+```
+
+> *NOTE:* This is just examples of most common used drivers.<br> For more information, refer [this](https://wiki.archlinux.org/title/NVIDIA) page on Arch Wiki.
+
+### Enable the DRM Kernel mode settings
+
+Open the grub config file(/etc/default/grub) using your preffered text editor (sudo required).<br>
+Find the line with `GRUB_CMDLINE_LINUX_DEFAULT` and append `nvidia-drm.modeset-1` to it.<br>
+Save and Exit the file.<br>
+Finish off with:
+```bash
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+Open up the mkinitcpio config file(/etc/mkinitcpio.conf) the same way.<br>
+Find the line with `MODULES=()`. This brackets doesn't have to be empty.<br>
+Append the following into the brackets:
+`nvidia nvidia_modeset nvidia_uvm nvidia_drm`<br>
+Save and Exit.<br>
+Finish off with `sudo mkinitcpio -P`.<br>
+
+### Add the pacman hook
+
+Every time the NVIDIA driver updates, you need to update the initramfs as well. this step takes away that hassle from you by using a [pacman hook](https://wiki.archlinux.org/title/Pacman#Hooks).<br>
+
+Create a new empty file: `/etc/pacman.d/hooks/nvidia.hook`<br>
+You can do that either by using the `touch` command or just directly opening it using your preffered editor as if it already exists. First save will automatically create the file
+
+Put the following content into the `nvidia.hook` file:<br>
+```
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia
+Target=linux
+# Change the linux part above if a different kernel is used
+
+[Action]
+Description=Update NVIDIA module in initcpio
+Depends=mkinitcpio
+When=PostTransaction
+NeedsTargets
+Exec=/bin/sh -c 'while read -r trg; do case $trg in linux*) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+```
+
+> *NOTE:* Replace both the values for "Target" according to what you installed. for example, `nvidia-lts` and `linux-lts` if you have `linux-lts` kernel and same goes if you have `nvidia-dkms`.<br>
+
+The complication in the Exec line above is in order to avoid running mkinitcpio multiple times if both nvidia and linux get updated. In case this does not bother you, the Target=linux and NeedsTargets lines may be dropped, and the Exec line may be reduced to simply Exec=/usr/bin/mkinitcpio -P<br>
+
+Now reboot and enjoy :)
+
+### Checking if the drivers are actually installed.
+
+Run the command: `nvidia-smi`<br>
+This should show your GPU name and some other information in the output.
+
+> For more information on Hardware accelerated video decoding/encoding and few other NVIDIA-related topics, refer to [this page](https://wiki.archlinux.org/title/NVIDIA) on ArchWiki, or forums or try googling.
 
 # Addtional Links
