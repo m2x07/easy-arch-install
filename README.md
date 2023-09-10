@@ -352,7 +352,7 @@ yay -S nvidia nvidia-utils nvidia-settings nvtop lib32-nvidia-utils opencl-nvidi
 
 
 
-* For `NVCx*` and `NVDx*` cards:
+* For `NVCx`* and `NVDx`* cards:
 
 > *where 'x' is any letter/number
 
