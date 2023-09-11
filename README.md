@@ -278,7 +278,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ## Installing a GUI (Desktop Environment OR Window Manager)
 No sane person would like to use plain tty(you may use plain tty if you wish to). This guide covers several different Desktop Environment and Window Managers.<br>
-For simple users, we recommend KDE Plasma. Instructions for other DEs and WMs are covered after this section in the form of dropdown menus. 
+This guide mainly focuses on KDE Plasma but if you wish to install any other, directly skip to [this section](https://github.com/m2x07/easy-arch-install#5-other-desktop-environments-and-window-managers)
 
 ### KDE Plasma:
 
@@ -300,11 +300,8 @@ Let's enable the NetworkManager, Login Manager and avahi daemon
 systemctl enable NetworkManager sddm avahi-daemon
 ```
 
-<br>
 This will take a while, so sit back and wait for the installation to finish.<br>
 KDE Plasma is now successfully installed<br><br>
-
-> *NOTE: steps to install other Desktop Environments and WMs like GNOME or i3wm, dwm, etc will be added soon*<br>
 
 Once the installation is done, its finally time to exit the chroot.
 ```bash
