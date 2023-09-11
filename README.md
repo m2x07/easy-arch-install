@@ -8,7 +8,8 @@ A concise and detailed guide for effortless Arch Linux installation, offering a 
 + [Disk Configuration](https://github.com/m2x07/easy-arch-install#2-disk-configuration)
 + [Installing base system](https://github.com/m2x07/easy-arch-install#3-installing-base-system)
 + [Chrooting](https://github.com/m2x07/easy-arch-install#4-chrooting)
-+ [Post Install Configuration](https://github.com/m2x07/easy-arch-install#5-post-install-configuration)
++ [Other GUIs](https://github.com/m2x07/easy-arch-install#other-desktop-environments-and-window-managers)
++ [Post Install Configuration](https://github.com/m2x07/easy-arch-install#6-post-install-configuration)
 + [Additional Links](https://github.com/m2x07/easy-arch-install#addtitional-links)
 
 > *NOTE: wherever you see something like &lt;this&gt; (inside angular brackets), replace it with appropriate path/device name as needed*
@@ -315,9 +316,11 @@ Now that you are back in live iso, reboot your system:<br>
 reboot now
 ```
 Pull out the thumb drive with live iso once the screen turns off and before our computer turns back on.<br>
-Once you see the login screen, make sure you have `Plasma (X11)` selected in the dropdown menu at top-left of the screen. Enter your password and login.    
+Once you see the login screen, make sure you have `Plasma (X11)` selected in the dropdown menu at top-left of the screen. Enter your password and login.<br>
 
-# 5. Post Install Configuration
+# 5. Other Desktop Environments and Window Managers
+
+# 6. Post Install Configuration
 
 
 ## Installing a helper for Arch User Repository (AUR)
