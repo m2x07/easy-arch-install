@@ -320,6 +320,46 @@ Once you see the login screen, make sure you have `Plasma (X11)` selected in the
 
 # 5. Other Desktop Environments and Window Managers
 
+Skip this step if you already installed KDE Plasma<br>
+Click the individual items to expand them:<br>
+
+<details>
+<summary><b>GNOME</b></summary>
+
+Install required packages and groups:
+
+```bash
+pacman -Su gnome gnome-extra gnome-tweaks gdm
+```
+Start the GDM service to use GNOME everytime you login
+
+```bash
+systemctl enable gdm.service
+```
+
+By Default, GNOME runs on Wayland and runs some native X11 apps using Xwayland.
+While on the login screen, click the gear icon on the bottom of the screen to switch to Xorg and GNOME Classic<br>
+Find more details [here](https://wiki.archlinux.org/title/GNOME).<br>
+
+</details>
+
+<details>
+<summary><b>XFCE</b></summary>
+
+Installation:<br>
+```bash
+pacman -S xfce4 xfce4-goodies lightdm
+```
+Start the Display Manager service<br>
+```bash
+systemctl enable lightdm.service
+```
+Now you should be able to use XFCE4<br>
+More information: https://wiki.archlinux.org/title/GNOME
+
+</details>
+
+
 # 6. Post Install Configuration
 
 
