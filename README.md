@@ -8,7 +8,7 @@ A concise and detailed guide for effortless Arch Linux installation, offering a 
 + [Disk Configuration](https://github.com/m2x07/easy-arch-install#2-disk-configuration)
 + [Installing base system](https://github.com/m2x07/easy-arch-install#3-installing-base-system)
 + [Chrooting](https://github.com/m2x07/easy-arch-install#4-chrooting)
-+ [Other GUIs](https://github.com/m2x07/easy-arch-install#other-desktop-environments-and-window-managers)
++ [Other GUIs](https://github.com/m2x07/easy-arch-install#5-other-desktop-environments-and-window-managers)
 + [Post Install Configuration](https://github.com/m2x07/easy-arch-install#6-post-install-configuration)
 + [Additional Links](https://github.com/m2x07/easy-arch-install#addtitional-links)
 
