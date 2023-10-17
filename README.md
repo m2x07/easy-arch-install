@@ -474,4 +474,4 @@ This should show your GPU name and some other information in the output.
 
 > For more information on Hardware accelerated video decoding/encoding and few other NVIDIA-related topics, refer to [this page](https://wiki.archlinux.org/title/NVIDIA) on ArchWiki, or forums or try googling.
 
-# Addtional Links
+# Additional Links:
