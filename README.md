@@ -10,7 +10,7 @@ A concise and detailed guide for effortless Arch Linux installation, offering a 
 + [Chrooting](https://github.com/m2x07/easy-arch-install#4-chrooting)
 + [Other GUIs](https://github.com/m2x07/easy-arch-install#5-other-desktop-environments-and-window-managers)
 + [Post Install Configuration](https://github.com/m2x07/easy-arch-install#6-post-install-configuration)
-+ [Additional Links](https://github.com/m2x07/easy-arch-install#addititional-links)
++ [Additional Links](https://github.com/m2x07/easy-arch-install#additional-links)
 
 > *NOTE: wherever you see something like &lt;this&gt; (inside angular brackets), replace it with appropriate path/device name as needed*
 
