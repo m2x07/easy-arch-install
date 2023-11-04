@@ -12,8 +12,7 @@ A concise and detailed guide for effortless Arch Linux installation, offering a 
 + [Post Install Configuration](https://github.com/m2x07/easy-arch-install#6-post-install-configuration)
 + [Additional Links](https://github.com/m2x07/easy-arch-install#additional-links)
 
-> *NOTE: wherever you see something like &lt;this&gt; (inside angular brackets), replace it with appropriate path/device name as needed*
-
+> **NOTE:**<br>1. wherever you see something like &lt;this&gt; (inside angular brackets), replace it with appropriate path/device name as needed.<br>2. make sure you have the installation medium prepared and are booted from it.
 
 
 # 1. Initial Setup
@@ -99,7 +98,7 @@ Create 3 partions as follows:<br>
 |&lt;swap&gt;    | same as your ram  | Linux Swap    |
 |&lt;root&gt;    | remaining storage | Linux filesystem|
 
-> *Minimum of 512M is recommended for efi partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.*<br>
+> **NOTE:** Minimum of 512M is recommended for efi partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.<br>
 
 The order doesn't matter but this is what i prefer.<br>
 Write and Quit.<br>
@@ -123,13 +122,13 @@ As you can see, we can see information about our newly created partitions in the
 
 ## Formatting:
 Let's format our partitions with appropriate filesystem<br>
-Like i said, there are multiple options and methods when it comes to partitioning and formatting, for this guide, we'll be covering ext4 as our primary filesystem
+Like i said, there are multiple filesystems available when it comes to partitioning and formatting, for this guide, we'll be covering ext4 as our primary filesystem
 ```bash
 mkfs.fat -F 32 /dev/<efi>       # FAT32 for the efi partition
 mkfs.swap /dev/<swap>           # swap partition
 mkfs.ext4 /dev/<root>           # EXT4 for the root partition
 ```
-*As of now for BTRFS and other Filesystems, refer the friendly [ArchWiki](https://wiki.archlinux.org/title/btrfs) :)*
+> As of now for BTRFS and other Filesystems, refer the friendly [ArchWiki](https://wiki.archlinux.org/title/btrfs)
 
 ## Mounting:
 Mount all of the partitions:
@@ -162,8 +161,8 @@ Now lets install the packages and wait for the installation to finish
 ```bash
 pacstrap /mnt base linux linux-firmware vim nano
 ```
-> *NOTE: if you want to use any other kernel, then replace `linux` with your desired kernel. For example `linux-zen` or `linux-lts`. No need to replace the `linux-firmware` package<br>
-Also, install `btrfs-progs` if you are using btrfs filesystem. it provides additional tools for btrfs filesystem*   
+> **NOTE:** if you want to use any other kernel, then replace `linux` with your desired kernel. For example `linux-zen` or `linux-lts`. No need to replace the `linux-firmware` package<br>
+Also, install `btrfs-progs` if you are using btrfs filesystem. it provides additional tools for btrfs filesystem   
 
 Now finally generate the fstab configuration
 ```bash
@@ -177,12 +176,12 @@ Now we need to shift to our disk and do our thing there.<br>
 arch-chroot /mnt
 ```
 
-> *NOTE: chrooting is the process of changing our root directory from live iso to the root of our disk where arch linux will be installed. make sure to not exit untill the installationi is finished as it may affect your installation. If you see the same commands, do not get confused as now we are in our new system and not the live iso*
+> **NOTE:** chrooting is the process of changing our root directory from live iso to the root of our disk where arch linux will be installed. make sure to not exit untill the installationi is finished as it may affect your installation. If you see the same commands, do not get confused as now we are in our new system and not the live iso
 
 ## Setting up the host
 First we set the hostname in `/etc/hostname` file. A host name is like a nickname for your computer. you may take a moment to choose one for yourself, and remember it<br>
 Once you've chosen, open up the file<br>
-```zsh
+```bash
 nano /etc/hostname
 ```
 and just write your hostname here. Save and Quit<br>
@@ -190,7 +189,7 @@ and just write your hostname here. Save and Quit<br>
 Now we need to setup the `/etc/hosts` file.<br>
 Use your desired editor to open the file `/etc/hosts`<br>
 
-```zsh
+```bash
 nano /etc/hosts
 ```
 and APPEND the following lines in there:
@@ -205,15 +204,15 @@ Write and Quit.<br>
 ## Configuring the Locale
 Open the file `/etc/locale.gen` and un-comment your desired locale. For us, its `en_US.UTF-8`.<br>
 Generate your locales based on the `locale.gen` file:
-```zsh
+```bash
 locale-gen
 ```
 Set the locale in `/etc/locale.conf` file:
-```zsh
+```bash
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 ```
 Export the environment variable for the locale
-```zsh
+```bash
 export $(cat /etc/locale.conf)
 ```
 
@@ -234,8 +233,8 @@ Install the packages using:
 ```bash
 pacman -Syy sudo linux-headers efibootmgr grub amd-ucode git base-devel dkms avahi os-prober ntfs-3g
 ```
-> *NOTE: replace `amd-ucode` with `intel-ucode` for intel CPUs. <br> if you installed `linux-zen` kernel, then replace `linux-headers` with `linux-zen-headers`.<br>
-include `grub-btrfs` package if you used btrfs filesystem*
+> **NOTE:** replace `amd-ucode` with `intel-ucode` for intel CPUs. <br> if you installed `linux-zen` kernel, then replace `linux-headers` with `linux-zen-headers`.<br>
+include `grub-btrfs` package if you used btrfs filesystem
 
 ## Adding a new user
 We haven't created our user yet and we will do it now.<br>
@@ -309,7 +308,7 @@ exit
 ```
 
 Now that you are back in live iso, reboot your system:<br>
-```zsh
+```bash
 reboot now
 ```
 Pull out the thumb drive with live iso once the screen turns off and before our computer turns back on.<br>
@@ -352,7 +351,7 @@ Start the Display Manager service<br>
 systemctl enable lightdm.service
 ```
 Now you should be able to use XFCE4<br>
-More information: https://wiki.archlinux.org/title/GNOME
+Find more details [here](https://wiki.archlinux.org/title/Xfce).
 
 </details>
 
@@ -362,7 +361,7 @@ More information: https://wiki.archlinux.org/title/GNOME
 
 ## Installing a helper for Arch User Repository (AUR)
 You cannot miss on the AUR. to get packages from AUR, you need an AUR Helper<br>
-We will be installing YAY.
+There are [many AUR helpers](https://wiki.archlinux.org/title/AUR_helpers) available. We will be installing YAY.
 Follow the commands below one by one:
 ```bash
 cd /opt
@@ -417,7 +416,7 @@ yay -S nvidia-settings nvidia-390xx-dkms nvidia-390xx-utils lib32-nvidia-390xx-u
 yay -S nvidia-settings nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils opencl-nvidia-470xx lib32-opencl-nvidia-470xx
 ```
 
-> *NOTE:* This is just examples of most common used drivers.<br> For more information, refer [this](https://wiki.archlinux.org/title/NVIDIA) page on Arch Wiki.
+> **NOTE:** This is just examples of most common used drivers.<br> For more information, refer [this](https://wiki.archlinux.org/title/NVIDIA) page on Arch Wiki.
 
 ### Enable the DRM Kernel mode settings
 
@@ -461,7 +460,7 @@ NeedsTargets
 Exec=/bin/sh -c 'while read -r trg; do case $trg in linux*) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 ```
 
-> *NOTE:* Replace both the values for "Target" according to what you installed. for example, `nvidia-lts` and `linux-lts` if you have `linux-lts` kernel and same goes if you have `nvidia-dkms`.<br>
+> **NOTE:** Replace both the values for "Target" according to what you installed. for example, `nvidia-lts` and `linux-lts` if you have `linux-lts` kernel and same goes if you have `nvidia-dkms`.<br>
 
 The complication in the Exec line above is in order to avoid running mkinitcpio multiple times if both nvidia and linux get updated. In case this does not bother you, the Target=linux and NeedsTargets lines may be dropped, and the Exec line may be reduced to simply Exec=/usr/bin/mkinitcpio -P<br>
 
