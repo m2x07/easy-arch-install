@@ -314,6 +314,8 @@ reboot now
 Pull out the thumb drive with live iso once the screen turns off and before our computer turns back on.<br>
 Once you see the login screen, make sure you have `Plasma (X11)` selected in the dropdown menu at top-left of the screen. Enter your password and login.<br>
 
+> Now that KDE is installed, you might want to try out my [konsole colorscheme](./assets/Terminator.colorscheme).
+
 # 5. Other Desktop Environments and Window Managers
 
 Skip this step if you already installed KDE Plasma<br>
