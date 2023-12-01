@@ -322,6 +322,59 @@ Skip this step if you already installed KDE Plasma<br>
 Click the individual items to expand them:<br>
 
 <details>
+<summary><b>DWM<b></summary>
+
+> For DWM setup, we'll use `st` as terminal, `dmenu` for menu and `xcompmgr` for compositor.
+
+Install dependencies:
+```bash
+sudo pacman -S xorg-server xorg-apps xorg-xinit xwallpaper xorg-xrandr libxft libxinerama
+```
+
+Clone the repositories at `~/.local/src/`: \
+You may clone them anywhere you want
+```bash
+git clone https://git.suckless.org/dwm
+```
+```bash
+git clone https://git.suckless.org/dmenu
+```
+```bash
+git clone https://git.suckless.org/st
+```
+Now to install them, run this in every repos you just cloned:
+```bash
+sudo make clean install
+```
+We also want our Xorg server and dwm to start automatically every time we login. \
+Open your login shell initialization file (like `~/.bash_profile` or `~/.zprofile`) and put the following in there. Create the file if its not present.
+
+```bash
+if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+  exec startx
+fi
+```
+Arch wiki has a lot of usefull information and tips and tricks for Xinit. I highly recommend checking it out as it may help you further tweak your installation.
+Find it [here](https://wiki.archlinux.org/title/Xinit#Autostart_X_at_login).
+
+Get a .xinitrc file for yourself.
+```bash
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
+```
+Now open `~/.xinitrc` and replace the last 5 lines with:
+```
+xcompmgr &
+xwallpaper --zoom path/to/wallpaper.jpg &
+exec dwm
+```
+> **NOTE:** The line `exec dwm` should always be last and all other line above it should end with `&`. Programs like xcompmgr runs forever and usually doesn't stop unless system is powered off. failing to put & at the end will just block the execution of script until the programs finishes execution and hence dwm will never be executed.
+
+Optionally, you may install a login manager like [ly](https://github.com/fairyglade/ly) or [lightdm](https://wiki.archlinux.org/title/LightDM) if you want. \
+Restart and now you can successfully flex your dwm setup on your dog 🐶.
+
+</details>
+
+<details>
 <summary><b>GNOME</b></summary>
 
 Install required packages and groups:
