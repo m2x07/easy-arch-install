@@ -322,7 +322,7 @@ Skip this step if you already installed KDE Plasma<br>
 Click the individual items to expand them:<br>
 
 <details>
-<summary><b>DWM<b></summary>
+<summary><b>DWM</b></summary>
 
 > For DWM setup, we'll use `st` as terminal, `dmenu` for menu and `xcompmgr` for compositor.
 
