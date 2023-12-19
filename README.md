@@ -1,3 +1,5 @@
+![banner](assets/banner.png)
+
 # Easy Arch Install
 A concise and detailed guide for effortless Arch Linux installation, offering a smooth installation journey
 
@@ -83,9 +85,7 @@ Disk identifier: C4F8B2FE-0074-4CC4-8445-F0C646127ACB
 The "/dev/nvme0n1" in the first line is our disk we'll be working on. disk name may vary to something like "/dev/sda" or "/dev/sdb" or anything else. look for the disk that you want to install Arch Linux on and remember it or note it down somewhere<br>
 
 ## Partitioning:
-There are various layouts and filesystems one can use to install Arch Linux
-For this guide, we will be primarily using EXT4 filesystem
-We will be using `cfdisk` tool to create our partitions. this tool is fairly easy to use as you can navigate through the options just by using the arrow keys.
+For this guide, we will primarily utilize the EXT4 filesystem to install Arch Linux. The chosen tool for partition creation is cfdisk, known for its user-friendly interface, allowing easy navigation through options using arrow keys.
 ```bash
 cfdisk /dev/nvme0n1     #replace disk name(nvme0n1) with your disk name
 ```
@@ -98,9 +98,8 @@ Create 3 partions as follows:<br>
 |&lt;swap&gt;    | same as your ram  | Linux Swap    |
 |&lt;root&gt;    | remaining storage | Linux filesystem|
 
-> **NOTE:** Minimum of 512M is recommended for efi partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.<br>
+> **NOTE:** Minimum of 512M is recommended for EFI partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.<br>
 
-The order doesn't matter but this is what i prefer.<br>
 Write and Quit.<br>
 Let's run the `fdisk -l` command again and compare the output.<br>
 
@@ -122,7 +121,7 @@ As you can see, we can see information about our newly created partitions in the
 
 ## Formatting:
 Let's format our partitions with appropriate filesystem<br>
-Like i said, there are multiple filesystems available when it comes to partitioning and formatting, for this guide, we'll be covering ext4 as our primary filesystem
+Like i said, there are multiple filesystems available when it comes to partitioning and formatting, for this guide, we'll be using EXT4
 ```bash
 mkfs.fat -F 32 /dev/<efi>       # FAT32 for the efi partition
 mkfs.swap /dev/<swap>           # swap partition
@@ -176,13 +175,11 @@ Now we need to shift to our disk and do our thing there.<br>
 arch-chroot /mnt
 ```
 
-> **NOTE:** chrooting is the process of changing our root directory from live iso to the root of our disk where arch linux will be installed. make sure to not exit untill the installationi is finished as it may affect your installation. If you see the same commands, do not get confused as now we are in our new system and not the live iso
-
 ## Setting up the host
 First we set the hostname in `/etc/hostname` file. A host name is like a nickname for your computer. you may take a moment to choose one for yourself, and remember it<br>
 Once you've chosen, open up the file<br>
 ```bash
-nano /etc/hostname
+vim /etc/hostname
 ```
 and just write your hostname here. Save and Quit<br>
 
@@ -190,7 +187,7 @@ Now we need to setup the `/etc/hosts` file.<br>
 Use your desired editor to open the file `/etc/hosts`<br>
 
 ```bash
-nano /etc/hosts
+vim /etc/hosts
 ```
 and APPEND the following lines in there:
 ```
@@ -219,7 +216,7 @@ export $(cat /etc/locale.conf)
 ## Installing necessary packages
 Let's make some changes to the config file of our package manager
 ```bash
-nano /etc/pacman.conf           # or any text editor of your preference
+vim /etc/pacman.conf           # or any text editor of your preference
 ```
 Locate and un-comment the following lines:
 
@@ -252,7 +249,7 @@ passwd <username>
 ```
 Let's allow the group "wheel" to execute any commands with sudo
 ```bash
-EDITOR=nano visudo
+EDITOR=vim visudo
 ```
 Locate and un-comment the following line:<br>
 + `%wheel ALL=(ALL:ALL) ALL`<br>
@@ -300,7 +297,7 @@ systemctl enable NetworkManager sddm avahi-daemon
 ```
 
 This will take a while, so sit back and wait for the installation to finish.<br>
-KDE Plasma is now successfully installed<br><br>
+KDE Plasma is now successfully installed<br>
 
 Once the installation is done, its finally time to exit the chroot.
 ```bash
@@ -311,7 +308,7 @@ Now that you are back in live iso, reboot your system:<br>
 ```bash
 reboot now
 ```
-Pull out the thumb drive with live iso once the screen turns off and before our computer turns back on.<br>
+Pull out the thumb drive with live iso once the screen turns off and before your computer turns back on.<br>
 Once you see the login screen, make sure you have `Plasma (X11)` selected in the dropdown menu at top-left of the screen. Enter your password and login.<br>
 
 > Now that KDE is installed, you might want to try out my [konsole colorscheme](./assets/Terminator.colorscheme).
@@ -324,11 +321,16 @@ Click the individual items to expand them:<br>
 <details>
 <summary><b>DWM</b></summary>
 
-> For DWM setup, we'll use `st` as terminal, `dmenu` for menu and `xcompmgr` for compositor.
+> For DWM setup, we'll use the following stack: \
+> MENU: [`dmenu`](https://dmenu.suckless.org) \
+> TERM: [`st`](https://st.suckless.org) \
+> BAR: [`slstatus`](http://tools.suckless.org/slstatus/) \
+> COMPOSITOR: [`xcompmgr`](https://wiki.archlinux.org/title/Xcompmgr) \
+> IMAGE-VIEWER: [`sxiv`](https://wiki.archlinux.org/title/Sxiv)
 
 Install dependencies:
 ```bash
-sudo pacman -S xorg-server xorg-apps xorg-xinit xwallpaper xorg-xrandr libxft libxinerama
+sudo pacman -S xorg-server xcompmgr sxiv xorg-xinit xwallpaper xorg-xrandr libxft libxinerama
 ```
 
 Clone the repositories at `~/.local/src/`: \
@@ -341,6 +343,9 @@ git clone https://git.suckless.org/dmenu
 ```
 ```bash
 git clone https://git.suckless.org/st
+```
+```bash
+git clone https://git.suckless.org/slstatus
 ```
 Now to install them, run this in every repos you just cloned:
 ```bash
@@ -357,7 +362,7 @@ fi
 Arch wiki has a lot of usefull information and tips and tricks for Xinit. I highly recommend checking it out as it may help you further tweak your installation.
 Find it [here](https://wiki.archlinux.org/title/Xinit#Autostart_X_at_login).
 
-Get a .xinitrc file for yourself.
+Get a copy of .xinitrc 
 ```bash
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 ```
@@ -365,10 +370,12 @@ Now open `~/.xinitrc` and replace the last 5 lines with:
 ```
 xcompmgr &
 xwallpaper --zoom path/to/wallpaper.jpg &
+slstatus &
 exec dwm
 ```
-> **NOTE:** The line `exec dwm` should always be last and all other line above it should end with `&`. Programs like xcompmgr runs forever and usually doesn't stop unless system is powered off. failing to put & at the end will just block the execution of script until the programs finishes execution and hence dwm will never be executed.
+> **NOTE:** The line `exec dwm` should always be last and all other line above it should end with `&`. Programs like xcompmgr runs forever and usually doesn't stop unless system is powered off. failing to put `&` at the end will just block the execution of script until the programs finishes execution and hence dwm will never be executed.
 
+**You may now go ahead and apply the patches you want from [suckless.org](https://suckless.org)** \
 Optionally, you may install a login manager like [ly](https://github.com/fairyglade/ly) or [lightdm](https://wiki.archlinux.org/title/LightDM) if you want. \
 Restart and now you can successfully flex your dwm setup on your dog 🐶.
 
