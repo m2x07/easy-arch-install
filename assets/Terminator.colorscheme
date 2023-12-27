@@ -23,22 +23,22 @@ Color=124,128,153
 Color=124,128,153
 
 [Color1]
-Color=255,82,85
+Color=255,115,120
 
 [Color1Faint]
-Color=255,82,85
+Color=255,115,120
 
 [Color1Intense]
-Color=255,82,85
+Color=255,115,120
 
 [Color2]
-Color=82,227,82
+Color=110,237,122
 
 [Color2Faint]
-Color=82,227,82
+Color=110,237,122
 
 [Color2Intense]
-Color=82,227,82
+Color=110,237,122
 
 [Color3]
 Color=249,244,99
@@ -59,13 +59,13 @@ Color=83,183,250
 Color=83,183,250
 
 [Color5]
-Color=173,124,247
+Color=160,107,247
 
 [Color5Faint]
-Color=173,124,247
+Color=160,107,247
 
 [Color5Intense]
-Color=173,124,247
+Color=160,107,247
 
 [Color6]
 Color=85,235,235
@@ -86,27 +86,27 @@ Color=214,224,255
 Color=214,224,255
 
 [Foreground]
-Color=240,240,240
+Color=223,223,223
 RandomHueRange=360
 RandomSaturationRange=100
 
 [ForegroundFaint]
-Color=240,240,240
+Color=223,223,223
 RandomHueRange=360
 RandomSaturationRange=100
 
 [ForegroundIntense]
-Color=240,240,240
+Color=223,223,223
 RandomHueRange=360
 RandomSaturationRange=100
 
 [General]
 Anchor=0.5,0.5
-Blur=true
+Blur=false
 ColorRandomization=false
 Description=Terminator
 FillStyle=Tile
-Opacity=0.7
+Opacity=1
 Wallpaper=
 WallpaperFlipType=NoFlip
 WallpaperOpacity=1
