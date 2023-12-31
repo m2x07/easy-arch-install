@@ -15,14 +15,16 @@ A concise and detailed guide for effortless Arch Linux installation, offering a 
 + [Post Install Configuration](https://github.com/m2x07/easy-arch-install#6-post-install-configuration)
 + [Additional Links](https://github.com/m2x07/easy-arch-install#additional-links)
 
-> **NOTE:**<br>1. wherever you see something like &lt;this&gt; (inside angular brackets), replace it with appropriate path/device name as needed.<br>2. make sure you have the installation medium prepared and are booted from it.
+> [!IMPORTANT]
+> 1. Wherever you see something like &lt;this&gt; (inside angular brackets), replace it with appropriate path/device name as needed.
+> 2. Make sure you have the installation medium prepared and are booted from it.
 
 
 # 1. Initial Setup
 ## Connecting to Internet
 
-<details>
-    <summary>Wi-Fi</summary>
+If you have an ethernet cable, plug it in right now and skip to next section.
+### Wi-fi:
 Start the daemons required:
 
 ```zsh
@@ -43,10 +45,8 @@ iwctl station <interface_name> connect "ssid"
 
 
 Hit ENTER to enter your wifi password and confirm connection
-</details>
 
-<details>
-    <summary>USB Tethering</summary>
+### Alternatively, through USB Tethering:
 1. Connect your phone to your computer using a USB Cable<br>
 2. Navigate to Portable Hotspot (or look for similar settings) section and enable the USB tethering option<br>
 3. Make sure your phone is connected to the internet and now your computer should have internet access<br>
@@ -99,10 +99,11 @@ Create 3 partions as follows:<br>
 |&lt;swap&gt;    | same as your ram  | Linux Swap    |
 |&lt;root&gt;    | remaining storage | Linux filesystem|
 
-> **NOTE:** Minimum of 512M is recommended for EFI partition. If you will be installing multiple kernels, use atleast 1024M for efi partition. We are not going to install multiple kernel in this guide but i'm still alloting 1024M.<br>
+> [!IMPORTANT]
+> Minimum of 512M is recommended for EFI partition. &ge;1024M if installing multiple kernel.
 
-Write and Quit.<br>
-Let's run the `fdisk -l` command again and compare the output.<br>
+Write and Quit. \
+Let's run the `fdisk -l` command again and compare the output.
 
 ```
 Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
@@ -128,7 +129,8 @@ mkfs.fat -F 32 /dev/<efi>       # FAT32 for the efi partition
 mkfs.swap /dev/<swap>           # swap partition
 mkfs.ext4 /dev/<root>           # EXT4 for the root partition
 ```
-> As of now for BTRFS and other Filesystems, refer the friendly [ArchWiki](https://wiki.archlinux.org/title/btrfs)
+> [!NOTE]
+> As of now, for BTRFS and other Filesystems, refer the friendly [ArchWiki](https://wiki.archlinux.org/title/btrfs)
 
 ## Mounting:
 Mount all of the partitions:
@@ -149,10 +151,13 @@ nano /etc/pacman.conf           # or any text editor of your preference
 ```
 Locate and un-comment the following lines:
 
-`Color`<br>
-`ParallelDownloads = 5`<br><br>
-`[multilib]`<br>
-`Include = /etc/pacman.d/mirrorlist`<br>
+```
+Color
+ParallelDownloads = 5
+
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+```
 
 For slower connections, you might want to change the ParallelDownloads to 3.<br>
 Using the keybinds given on the bottom of the screen, Write the file and exit
@@ -161,7 +166,8 @@ Now lets install the packages and wait for the installation to finish
 ```bash
 pacstrap /mnt base linux linux-firmware vim nano
 ```
-> **NOTE:** if you want to use any other kernel, then replace `linux` with your desired kernel. For example `linux-zen` or `linux-lts`. No need to replace the `linux-firmware` package<br>
+> [!NOTE]
+> If you want to use any other kernel, then replace `linux` with your desired kernel. For example `linux-zen` or `linux-lts`. No need to replace the `linux-firmware` package<br>
 Also, install `btrfs-progs` if you are using btrfs filesystem. it provides additional tools for btrfs filesystem   
 
 Now finally generate the fstab configuration
@@ -215,23 +221,27 @@ export $(cat /etc/locale.conf)
 ```
 
 ## Installing necessary packages
-Let's make some changes to the config file of our package manager
+First, make some changes to the config file of our package manager
 ```bash
 vim /etc/pacman.conf           # or any text editor of your preference
 ```
 Locate and un-comment the following lines:
 
-`Color`<br>
-`ParallelDownloads = 5`<br><br>
-`[multilib]`<br>
-`Include = /etc/pacman.d/mirrorlist`<br>
+```
+Color
+ParallelDownloads = 5
 
-Feel free to change the value of ParallelDownloads.<br>
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+```
+
+Feel free to change the value of ParallelDownloads. \
 Install the packages using:
 ```bash
 pacman -Syy sudo linux-headers efibootmgr grub amd-ucode git base-devel dkms avahi os-prober ntfs-3g
 ```
-> **NOTE:** replace `amd-ucode` with `intel-ucode` for intel CPUs. <br> if you installed `linux-zen` kernel, then replace `linux-headers` with `linux-zen-headers`.<br>
+> [!IMPORTANT]
+> Replace `amd-ucode` with `intel-ucode` for intel CPUs. <br> if you installed `linux-zen` kernel, then replace `linux-headers` with `linux-zen-headers`.<br>
 include `grub-btrfs` package if you used btrfs filesystem
 
 ## Adding a new user
@@ -374,10 +384,12 @@ xwallpaper --zoom path/to/wallpaper.jpg &
 slstatus &
 exec dwm
 ```
-> **NOTE:** The line `exec dwm` should always be last and all other line above it should end with `&`. Programs like xcompmgr runs forever and usually doesn't stop unless system is powered off. failing to put `&` at the end will just block the execution of script until the programs finishes execution and hence dwm will never be executed.
+> [!IMPORTANT]
+> The line `exec dwm` should always be last and all other line above it should end with `&`. Programs like xcompmgr runs forever and usually doesn't stop unless system is powered off. failing to put `&` at the end will just block the execution of script until the programs finishes execution and hence dwm will never be executed.
 
-**You may now go ahead and apply the patches you want from [suckless.org](https://suckless.org)** \
-Optionally, you may install a login manager like [ly](https://github.com/fairyglade/ly) or [lightdm](https://wiki.archlinux.org/title/LightDM) if you want. \
+> [!TIP]
+> You may now go ahead and apply the patches you want from [suckless.org](https://suckless.org) \
+> Optionally, you may install a login manager like [ly](https://github.com/fairyglade/ly) or [lightdm](https://wiki.archlinux.org/title/LightDM) if you want. \
 Restart and now you can successfully flex your dwm setup on your dog 🐶.
 
 </details>
@@ -443,6 +455,7 @@ yay -Ss <search_keyword>    # search for a package
 
 ## Installing NVIDIA Drivers for linux
 
+> [!NOTE]
 > This doesn't covers all the details for all NVIDIA cards. The steps shown here should work for most of the latest NVIDIA GPUs. 
 
 ### Installing necessary packages
@@ -523,7 +536,8 @@ NeedsTargets
 Exec=/bin/sh -c 'while read -r trg; do case $trg in linux*) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 ```
 
-> **NOTE:** Replace both the values for "Target" according to what you installed. for example, `nvidia-lts` and `linux-lts` if you have `linux-lts` kernel and same goes if you have `nvidia-dkms`.<br>
+> [!IMPORTANT]
+> Replace both the values for "Target" according to what you installed. for example, `nvidia-lts` and `linux-lts` if you have `linux-lts` kernel and same goes if you have `nvidia-dkms`.<br>
 
 The complication in the Exec line above is in order to avoid running mkinitcpio multiple times if both nvidia and linux get updated. In case this does not bother you, the Target=linux and NeedsTargets lines may be dropped, and the Exec line may be reduced to simply Exec=/usr/bin/mkinitcpio -P<br>
 
@@ -534,6 +548,7 @@ Now reboot and enjoy :)
 Run the command: `nvidia-smi`<br>
 This should show your GPU name and some other information in the output.
 
+> [!NOTE]
 > For more information on Hardware accelerated video decoding/encoding and few other NVIDIA-related topics, refer to [this page](https://wiki.archlinux.org/title/NVIDIA) on ArchWiki, or forums or try googling.
 
 # Additional Links:
