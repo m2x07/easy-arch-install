@@ -3,7 +3,8 @@
 # Easy Arch Install
 A concise and detailed guide for effortless Arch Linux installation, offering a smooth installation journey
 
-> **NOTE:** The author assumes that the reader has basic knowledge and overview of using the command line and working with the shell. if you are a complete beginner, then i would recommend avoiding Arch Linux and stick to some beginner friendly distro.
+> [!NOTE]
+> The author assumes that the reader has basic knowledge and overview of using the command line and working with the shell. if you are a complete beginner, then i would recommend avoiding Arch Linux and stick to some beginner friendly distro.
 
 # 📑 Index
 + [Initial Setup](https://github.com/m2x07/easy-arch-install#1-initial-setup)
