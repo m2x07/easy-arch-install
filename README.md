@@ -329,9 +329,7 @@ Once you see the login screen, make sure you have `Plasma (X11)` selected in the
 Skip this step if you already installed KDE Plasma<br>
 Click the individual items to expand them:<br>
 
-<details>
-<summary><b>DWM</b></summary>
-
+## DWM
 > For DWM setup, we'll use the following stack: \
 > MENU: [`dmenu`](https://dmenu.suckless.org) \
 > TERM: [`st`](https://st.suckless.org) \
@@ -392,11 +390,7 @@ exec dwm
 > Optionally, you may install a login manager like [ly](https://github.com/fairyglade/ly) or [lightdm](https://wiki.archlinux.org/title/LightDM) if you want. \
 Restart and now you can successfully flex your dwm setup on your dog 🐶.
 
-</details>
-
-<details>
-<summary><b>GNOME</b></summary>
-
+## GNOME
 Install required packages and groups:
 
 ```bash
@@ -412,11 +406,7 @@ By Default, GNOME runs on Wayland and runs some native X11 apps using Xwayland.
 While on the login screen, click the gear icon on the bottom of the screen to switch to Xorg and GNOME Classic<br>
 Find more details [here](https://wiki.archlinux.org/title/GNOME).<br>
 
-</details>
-
-<details>
-<summary><b>XFCE</b></summary>
-
+## XFCE
 Installation:<br>
 ```bash
 pacman -S xfce4 xfce4-goodies lightdm
@@ -428,12 +418,7 @@ systemctl enable lightdm.service
 Now you should be able to use XFCE4<br>
 Find more details [here](https://wiki.archlinux.org/title/Xfce).
 
-</details>
-
-
 # 6. Post Install Configuration
-
-
 ## Installing a helper for Arch User Repository (AUR)
 You cannot miss on the AUR. to get packages from AUR, you need an AUR Helper<br>
 There are [many AUR helpers](https://wiki.archlinux.org/title/AUR_helpers) available. We will be installing YAY.
@@ -492,7 +477,8 @@ yay -S nvidia-settings nvidia-390xx-dkms nvidia-390xx-utils lib32-nvidia-390xx-u
 yay -S nvidia-settings nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils opencl-nvidia-470xx lib32-opencl-nvidia-470xx
 ```
 
-> **NOTE:** This is just examples of most common used drivers.<br> For more information, refer [this](https://wiki.archlinux.org/title/NVIDIA) page on Arch Wiki.
+> [!NOTE]
+> This is just examples of most common used drivers.<br> For more information, refer [this](https://wiki.archlinux.org/title/NVIDIA) page on Arch Wiki.
 
 ### Enable the DRM Kernel mode settings
 
