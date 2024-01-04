@@ -6,6 +6,11 @@ A concise and detailed guide for effortless Arch Linux installation, offering a 
 > [!NOTE]
 > The author assumes the reader has basic understanding of command line usage and shell operations. For beginners, it's advisable to opt for a user-friendly Linux distribution instead of Arch Linux.
 
+## Requirements:
++ UEFI supported computer.
++ An internet connection.
++ Patience and a will to _not_ give up.
+
 # 📑 Index
 + [Initial Setup](https://github.com/m2x07/easy-arch-install#1-initial-setup)
 + [Disk Configuration](https://github.com/m2x07/easy-arch-install#2-disk-configuration)
@@ -41,17 +46,18 @@ Connecting to wi-fi.
 ```bash
 iwctl station <interface_name> connect "ssid"
 ```
+> [!NOTE]
 > `ssid` is the name of the wi-fi network you want to connect to
 
 
 Hit ENTER to enter your wifi password and confirm connection
 
-### Alternatively, through USB Tethering:
+**Alternatively, through USB Tethering:**
 1. Connect your phone to your computer using a USB Cable.
 2. Navigate to Portable Hotspot (or look for similar settings) section and enable the USB tethering option.
 3. Make sure your phone is connected to the internet and now your computer should have internet access.
 
-### Test your internet connection
+### Test your internet connection:
 ```bash
 ping 3 8.8.8.8       # ensure that DHCP is working
 ping archlinux.org   # ensure that DNS is working
@@ -59,6 +65,25 @@ ping archlinux.org   # ensure that DNS is working
 If the connection is successfull, you should see repeated output similar to this: \
 ```
 64 bytes from 8.8.8.8: icmp_seq=3 ttl=117 time=73.5 ms
+```
+
+## Set Timezone
+First set the timezone:
+```bash
+timedatectl set-timezone <Region/City>
+```
+> [!IMPORTANT]
+> Replace `<Region/City>` with your region. For example, for India, it'll be `Asia/Kolkata`. So the command with look like `timedatectl set-timezone Asia/Kolkata`. \
+> Hitting TAB a few times should give you a list. Thanks to the zsh shell in the live iso.
+
+Enable NTP synchronization, allowing your system to automatically sync its clock with a network time server:
+```bash
+timedatectl set-ntp true
+```
+
+Next we sync the hardware clock of our computer with the timezone we just set instead of UTC
+```bash
+timedatectl set-local-rtc true
 ```
 
 # 2. Disk Configuration
@@ -76,7 +101,7 @@ Disk identifier: C4F8B2FE-0074-4CC4-8445-F0C646127ACB
 The `/dev/nvme0n1` in the first line is our disk for this installation. The disk name might be different, such as `/dev/sda` or `/dev/sdb` or something else. Find the name of the disk where you want to install Arch Linux and make a note of it.
 
 ## Partitioning:
-For this guide, we will mainly use the EXT4 filesystem to install Arch Linux. The selected tool for partition creation is cfdisk, recognized for its user-friendly interface, making it easy to navigate through options using the keyboard.
+For this guide, we will mainly use the EXT4 filesystem to install Arch Linux. The selected tool for partition creation is cfdisk, recognized for its user-friendly TUI, making it easy to navigate through options using the keyboard.
 ```bash
 cfdisk /dev/nvme0n1     #replace disk name(nvme0n1) with your disk name
 ```
@@ -197,6 +222,14 @@ Export the environment variable for the locale.
 export $(cat /etc/locale.conf)
 ```
 
+## Set Timezone
+Repeat the same 3 commands from the first section of this guide.
+```bash
+timedatectl set-timezone Asia/Kolkata
+timedatectl set-ntp true
+timedatectl set-local-rtc true
+```
+
 ## Installing necessary packages
 First, make some changes to the config file of our package manager.
 ```bash
@@ -219,6 +252,13 @@ pacman -Syy sudo linux-headers efibootmgr grub amd-ucode git base-devel dkms ava
 ```
 > [!IMPORTANT]
 > Replace `amd-ucode` with `intel-ucode` for intel CPUs. If you installed `linux-zen` kernel, then replace `linux-headers` with `linux-zen-headers`. And include `grub-btrfs` package if you used btrfs filesystem
+
+We'll also install a web browser of our choice. Firefox is our choice
+```bash
+pacman -S firefox
+```
+> [!TIP]
+> I highly recommend avoiding Google Chrome or Chrome-based browers. Some better alternatives are firefox, brave or mercury(fork of firefox).
 
 ## Adding a new user
 We haven't created our user yet, and we'll do that now. \
@@ -506,3 +546,4 @@ This should show your GPU name and some other information in the output.
 > For more information on Hardware accelerated video decoding/encoding and few other NVIDIA-related topics, refer to [this page](https://wiki.archlinux.org/title/NVIDIA) on ArchWiki, or forums or try googling.
 
 # Additional Links:
+* https://wiki.archlinux.org/title/Installation_guide
